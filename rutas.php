@@ -10,3 +10,6 @@ define('RUTA_TEMPLATES', RUTA_RAIZ . "/includes/templates");
 
 //Ruta que contiene la carpeta donde estan los funciones
 define('RUTA_FUNCIONES', RUTA_RAIZ . "/includes/funciones.php");
+
+//Ruta que contiene la conexion a la base de datos
+define('RUTA_BASEDATOS', RUTA_RAIZ . "/includes/config/database.php");

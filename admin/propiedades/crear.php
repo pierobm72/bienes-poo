@@ -1,5 +1,10 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
+
+require RUTA_BASEDATOS;
+$db = conectarDB();
+var_dump($db);
+
 include_once RUTA_FUNCIONES;
 incluirTemplates("header");
 ?>
