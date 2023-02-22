@@ -6,6 +6,11 @@ require RUTA_BASEDATOS;
 //Conectarse a la base de datos
 $db = conectarDB();
 
+// Consultar para obtener los vendedores de la base de ddaots
+$consulta = "SELECT * FROM vendedores";
+$resultado = mysqli_query($db,$consulta);
+
+
 //Arreglo que contiene los errroes;
 $errores = [];
 
@@ -29,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $wc = $_POST["wc"];
   $estacionamiento = $_POST["estacionamiento"];
   $vendedor_id = $_POST["vendedor_id"];
+  $creado = date("Y/m/d");
 
   if ($titulo === "") {
     $errores[] = "El titulo es obligatorio";
@@ -62,15 +68,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (empty($errores)) {
 
     //Almacenar los datos en una query
-    $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitacion,wc,estacionamiento,vendedor_id) ";
-    $query .= "VALUES ('$titulo','$precio','$descripcion','$habitacion','$wc','$estacionamiento','$vendedor_id');";
+    $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitacion,wc,estacionamiento,creado,vendedor_id) ";
+    $query .= "VALUES ('$titulo','$precio','$descripcion','$habitacion','$wc','$estacionamiento','$creado','$vendedor_id');";
 
     //Insertar la consulta a la base de datos
     $resultado = mysqli_query($db, $query);
 
     //Validar que la consulta se ha enviado
     if ($resultado) {
-      echo "Insertado correctamente";
+
+      header("Location: /admin");
     }
   }
 }
@@ -119,11 +126,12 @@ incluirTemplates("header");
     </fieldset>
 
     <fieldset>
-      <legend>Vendedor</legend>
+      <legend>Vendedor</legend>     
       <select name="vendedor_id">
         <option value="">--Elige el vendedor --</option>
-        <option value="1">Juan</option>
-        <option value="2">Karen</option>
+        <?php while($row = mysqli_fetch_assoc($resultado) ) { ?>
+          <option <?php echo $vendedor_id === $row["id"] ?"selected" : ""?> value="<?= $row["id"] ?>"><?php echo $row['nombre'] . " " . $row['apellido'];?></option>       
+        <?php } ?>
       </select>
     </fieldset>
 
