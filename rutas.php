@@ -13,3 +13,7 @@ define('RUTA_FUNCIONES', RUTA_RAIZ . "/includes/funciones.php");
 
 //Ruta que contiene la conexion a la base de datos
 define('RUTA_BASEDATOS', RUTA_RAIZ . "/includes/config/database.php");
+
+
+//Ruta que contiene carpeta de imagenes que se sube por el formulario
+define('RUTA_IMAGENES', RUTA_RAIZ . "/imagenes/");
