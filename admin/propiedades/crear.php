@@ -6,7 +6,10 @@ require RUTA_BASEDATOS;
 //Conectarse a la base de datos
 $db = conectarDB();
 
-//Verificar que la peticion de datos sea de tipo POST
+//Arreglo que contiene los errroes;
+$errores = [];
+
+//Verificar que la peticion de datos sea de tipo POST . 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   //Almacenar los datos ingresados por el usuario en el formulario
@@ -18,16 +21,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $estacionamiento = $_POST["estacionamiento"];
   $vendedor_id = $_POST["vendedor_id"];
 
-  //Almacenar los datos en una query
-  $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitacion,wc,estacionamiento,vendedor_id) ";
-  $query .= "VALUES ('$titulo','$precio','$descripcion','$habitacion','$wc','$estacionamiento','$vendedor_id');";
+  if ($titulo === "") {
+    $errores[] = "El titulo es obligatorio";
+  }
 
-  //Insertar la consulta a la base de datos
-  $resultado = mysqli_query($db,$query);
+  if ($precio === "") {
+    $errores[] = "El precio es obligatorio";
+  }
 
-  //Validar que la consulta se ha enviado
-  if($resultado){
-    echo "Insertado correctamente";
+  if (strlen($descripcion) < 50) {
+    $errores[] = "La descripcion es obligatoria y debe ser mayor a 50 caracteres";
+  }
+
+  if ($habitacion === "") {
+    $errores[] = "La habitacion es obligatoria";
+  }
+
+  if ($wc === "") {
+    $errores[] = "El baño es obligatoria";
+  }
+
+  if ($estacionamiento === "") {
+    $errores[] = "El numero de lugares de estacionamiento es obligatoria";
+  }
+
+  if ($vendedor_id === "") {
+    $errores[] = "Elige un vendedor";
+  }
+
+  //Verificar que los campos de el formulario este lleno
+  if (empty($errores)) {
+
+    //Almacenar los datos en una query
+    $query = "INSERT INTO propiedades (titulo,precio,descripcion,habitacion,wc,estacionamiento,vendedor_id) ";
+    $query .= "VALUES ('$titulo','$precio','$descripcion','$habitacion','$wc','$estacionamiento','$vendedor_id');";
+
+    //Insertar la consulta a la base de datos
+    $resultado = mysqli_query($db, $query);
+
+    //Validar que la consulta se ha enviado
+    if ($resultado) {
+      echo "Insertado correctamente";
+    }
   }
 }
 
@@ -35,51 +70,56 @@ incluirTemplates("header");
 ?>
 
 <main class="contenedor seccion">
-    <h1>Crear</h1>
-    <a href="/admin/" class="boton boton-verde">Volver</a>
+  <?php foreach ($errores as $error) { ?>
+    <div class="alerta error"><?= $error ?></div>
+  <?php } ?>
 
-    <form class="formulario" action="/admin/propiedades/crear.php" method="POST">
-      <fieldset>
-          <legend>Informacion General</legend>
+  <h1>Crear</h1>
+  <a href="/admin/" class="boton boton-verde">Volver</a>
 
-          <label for="titulo">Titulo:</label>
-          <input type="text" id="titulo" placeholder="Titulo Propiedad" name="titulo">
+  <form class="formulario" action="/admin/propiedades/crear.php" method="POST">
+    <fieldset>
+      <legend>Informacion General</legend>
 
-          <label for="precio">Precio:</label>
-          <input type="number" id="precio" placeholder="Titulo Precio" name="precio">
+      <label for="titulo">Titulo:</label>
+      <input type="text" id="titulo" placeholder="Titulo Propiedad" name="titulo" >
 
-          <label for="imagen">Imagen:</label>
-          <input type="file" id="imagen"  accept="image/jpeg, image/png">
+      <label for="precio">Precio:</label>
+      <input type="number" id="precio" placeholder="Precio" name="precio">
 
-          <label for="descripcion">Descripcion:</label>
-          <textarea id="descripcion" name="descripcion"></textarea>
+      <label for="imagen">Imagen:</label>
+      <input type="file" id="imagen" accept="image/jpeg, image/png">
 
-      </fieldset>
+      <label for="descripcion">Descripcion:</label>
+      <textarea id="descripcion" name="descripcion"></textarea>
 
-      <fieldset>
-          <legend>Informacion Propiedad</legend>
+    </fieldset>
 
-          <label for="habitacion">Habitaciones:</label>
-          <input type="number" min="1" max="9" id="habitacion" placeholder="Ejm. 3" name="habitacion">
+    <fieldset>
+      <legend>Informacion Propiedad</legend>
 
-          <label for="wc:">Baños:</label>
-          <input type="number" min="1" max="9" id="wc:" placeholder="Ejm. 3" name="wc">
+      <label for="habitacion">Habitaciones:</label>
+      <input type="number" min="1" max="9" id="habitacion" placeholder="Ejm. 3" name="habitacion">
 
-          <label for="estacionamiento:">Estacionamiento:</label>
-          <input type="number" min="1" max="9" id="estacionamiento:" placeholder="Ejm. 3" name="estacionamiento">          
+      <label for="wc:">Baños:</label>
+      <input type="number" min="1" max="9" id="wc:" placeholder="Ejm. 3" name="wc">
 
-      </fieldset>
+      <label for="estacionamiento:">Estacionamiento:</label>
+      <input type="number" min="1" max="9" id="estacionamiento:" placeholder="Ejm. 3" name="estacionamiento">
 
-      <fieldset>
-        <legend>Vendedor</legend>
-        <select name="vendedor_id">
-            <option value="1">Juan</option>
-            <option value="2">Karen</option>
-        </select>
-      </fieldset>
+    </fieldset>
 
-      <input type="submit" value="Enviar" class="boton boton-verde">
-    </form>
+    <fieldset>
+      <legend>Vendedor</legend>
+      <select name="vendedor_id">
+        <option value="">--Elige el vendedor --</option>
+        <option value="1">Juan</option>
+        <option value="2">Karen</option>
+      </select>
+    </fieldset>
+
+    <input type="submit" value="Enviar" class="boton boton-verde">
+  </form>
 </main>
 
 <?php

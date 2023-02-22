@@ -752,4 +752,15 @@ h4 {
   margin: 0;
   padding: 1rem 0 3rem 0;
 }
+
+.alerta {
+  color: white;
+  text-transform: uppercase;
+  padding: 5px;
+  text-align: center;
+  margin: 10px;
+}
+.alerta.error {
+  background-color: rgb(202, 40, 40);
+}
 /*# sourceMappingURL=app.css.map */
