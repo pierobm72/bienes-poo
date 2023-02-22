@@ -9,6 +9,15 @@ $db = conectarDB();
 //Arreglo que contiene los errroes;
 $errores = [];
 
+// Inicializar las variables en blanco
+$titulo = "";
+$precio = "";
+$descripcion = "";
+$habitacion = "";
+$wc = "";
+$estacionamiento = "";
+$vendedor_id = "";
+
 //Verificar que la peticion de datos sea de tipo POST . 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -29,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errores[] = "El precio es obligatorio";
   }
 
-  if (strlen($descripcion) < 50) {
+  if (strlen($descripcion) < 1) {
     $errores[] = "La descripcion es obligatoria y debe ser mayor a 50 caracteres";
   }
 
@@ -82,16 +91,16 @@ incluirTemplates("header");
       <legend>Informacion General</legend>
 
       <label for="titulo">Titulo:</label>
-      <input type="text" id="titulo" placeholder="Titulo Propiedad" name="titulo" >
+      <input type="text" id="titulo" placeholder="Titulo Propiedad" name="titulo" value="<?= $titulo ?>">
 
       <label for="precio">Precio:</label>
-      <input type="number" id="precio" placeholder="Precio" name="precio">
+      <input type="number" id="precio" placeholder="Precio" name="precio" value="<?= $precio ?>">
 
       <label for="imagen">Imagen:</label>
       <input type="file" id="imagen" accept="image/jpeg, image/png">
 
       <label for="descripcion">Descripcion:</label>
-      <textarea id="descripcion" name="descripcion"></textarea>
+      <textarea id="descripcion" name="descripcion" ><?= $descripcion ?></textarea>
 
     </fieldset>
 
@@ -99,13 +108,13 @@ incluirTemplates("header");
       <legend>Informacion Propiedad</legend>
 
       <label for="habitacion">Habitaciones:</label>
-      <input type="number" min="1" max="9" id="habitacion" placeholder="Ejm. 3" name="habitacion">
+      <input type="number" min="1" max="9" id="habitacion" placeholder="Ejm. 3" name="habitacion" value="<?= $habitacion ?>">
 
       <label for="wc:">Baños:</label>
-      <input type="number" min="1" max="9" id="wc:" placeholder="Ejm. 3" name="wc">
+      <input type="number" min="1" max="9" id="wc:" placeholder="Ejm. 3" name="wc" value="<?= $wc ?>">
 
       <label for="estacionamiento:">Estacionamiento:</label>
-      <input type="number" min="1" max="9" id="estacionamiento:" placeholder="Ejm. 3" name="estacionamiento">
+      <input type="number" min="1" max="9" id="estacionamiento:" placeholder="Ejm. 3" name="estacionamiento" value="<?= $estacionamiento ?>">
 
     </fieldset>
 
