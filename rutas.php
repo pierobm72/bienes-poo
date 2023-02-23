@@ -35,3 +35,9 @@ define('PROPIEDADES_URL', BASE_URL . "/admin/propiedades");
 //Ruta que contiene la carpeta propiedades
 define('ADMIN_URL', BASE_URL . "/admin");
 
+
+
+//Ruta que contiene la carpeta propiedades
+define('IMAGENES_URL', BASE_URL . "/imagenes/");
+
+
