@@ -6,7 +6,7 @@ require RUTA_BASEDATOS;
 //Validar que el id sea entero
 $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
 
-if(!$id) header("Location: " . URL_ADMIN);
+if (!$id) header("Location: " . URL_ADMIN);
 
 //Conectarse a la base de datos
 $db = conectarDB();
@@ -77,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($vendedor_id === "") {
         $errores[] = "Elige un vendedor";
-    }    
+    }
 
-    $medida = 1000 * 100;
+    $medida = 3000 * 100;
     if ($imagen["size"] > $medida) {
         $errores[] = "La imagen es muy grande";
     }
@@ -87,35 +87,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //Verificar que los campos de el formulario este lleno
     if (empty($errores)) {
 
-        // // --- SUBIDA DE ARCHIVOS ---
+        // --- SUBIDA DE ARCHIVOS ---
 
-        // //Ruta de la carpeta imagenes
-        // $carpetaImagenes = RUTA_IMAGENES;
-        // //Verifica que la carpeta imagenes no exista
-        // if (is_dir($carpetaImagenes) === false) {
-        //     //Crear la carpeta imagenes
-        //     mkdir($carpetaImagenes);
-        // }
+        //Ruta de la carpeta imagenes
+        $carpetaImagenes = RUTA_IMAGENES;
+        //Verifica que la carpeta imagenes no exista
+        if (is_dir($carpetaImagenes) === false) {
+            //Crear la carpeta imagenes
+            mkdir($carpetaImagenes);
+        }
 
-        // //Obtener extension de la imagen
-        // $extensionImagen =  strrchr($_FILES['imagen']['name'], '.');
-        // //Generar nombre unico
-        // $nombreImagen = md5(uniqid(rand(), true)) . $extensionImagen;
+        $nombreImagen = "";
 
-        // //Subir la imagen
-        // move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+        //Verificar si se ha subido una nuevo imagen
+        if ($imagen["name"]) {
+            //Eliminar imagen previa
+            unlink($carpetaImagenes . $propiedad["imagen"]);
+
+            //Obtener extension de la imagen
+            $extensionImagen =  strrchr($_FILES['imagen']['name'], '.');
+            //Generar nombre unico
+            $nombreImagen = md5(uniqid(rand(), true)) . $extensionImagen;
+
+            //Subir la imagen
+            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+        } else {
+            $nombreImagen = $propiedad["imagen"];
+        }
+
+
 
 
         //Query para actualizar los datos
         $query = "UPDATE propiedades SET ";
-        $query .="titulo = '{$titulo}',";
-        $query .="precio = {$precio},";
-        $query .="descripcion = '{$descripcion}',";
-        $query .="habitacion = {$habitacion},";
-        $query .="wc = {$wc},";
-        $query .="estacionamiento = {$estacionamiento},";
-        $query .="vendedor_id = '{$vendedor_id}' ";
-        $query .="WHERE id= $id;";
+        $query .= "titulo = '{$titulo}',";
+        $query .= "precio = {$precio},";
+        $query .= "descripcion = '{$descripcion}',";
+        $query .= "imagen = '{$nombreImagen}',";
+        $query .= "habitacion = {$habitacion},";
+        $query .= "wc = {$wc},";
+        $query .= "estacionamiento = {$estacionamiento},";
+        $query .= "vendedor_id = '{$vendedor_id}' ";
+        $query .= "WHERE id= $id;";
 
 
         //Insertar la consulta a la base de datos
@@ -154,7 +167,7 @@ incluirTemplates("header");
 
             <label for="imagen">Imagen:</label>
             <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
-            <img src="<?php echo URL_IMAGENES .  $imagenPropiedad?>" class="imagen-actualizar">
+            <img src="<?php echo URL_IMAGENES .  $imagenPropiedad ?>" class="imagen-actualizar">
 
             <label for="descripcion">Descripcion:</label>
             <textarea id="descripcion" name="descripcion"><?= $descripcion ?></textarea>

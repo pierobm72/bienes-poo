@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errores[] = "La imagen es obligatoria";
   }
 
-  $medida = 1000 * 100;
+  $medida = 3000 * 100;
   if ($imagen["size"] > $medida) {
     $errores[] = "La imagen es muy grande";
   }
