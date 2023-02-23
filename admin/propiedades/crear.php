@@ -23,7 +23,7 @@ $wc = "";
 $estacionamiento = "";
 $vendedor_id = "";
 
-//Verificar que la peticion de datos sea de tipo POST . 
+//Verificar que la peticion de datos sea de tipo POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   //Almacenar los datos ingresados por el usuario en el formulario
@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (empty($errores)) {
 
     // --- SUBIDA DE ARCHIVOS ---
+
     //Ruta de la carpeta imagenes
     $carpetaImagenes = RUTA_IMAGENES; 
     //Verifica que la carpeta imagenes no exista
@@ -104,11 +105,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //Insertar la consulta a la base de datos
     $resultado = mysqli_query($db, $query);
 
-    debuguear($query,1);
-
     //Validar que la consulta se ha enviado
     if ($resultado) {
-      header("Location: /admin");
+      header("Location: /admin?resultado=1");
     } else {
       echo "Fallo al insertar en la base de datos";
       echo $resultado;
@@ -126,9 +125,9 @@ incluirTemplates("header");
   <?php } ?>
 
   <h1>Crear</h1>
-  <a href="/admin/" class="boton boton-verde">Volver</a>
+  <a href="<?= ADMIN_URL ?>" class="boton boton-verde">Volver</a>
 
-  <form class="formulario" action="/admin/propiedades/crear.php" method="POST" enctype="multipart/form-data">
+  <form class="formulario" action="<?= PROPIEDADES_URL ?>/crear.php" method="POST" enctype="multipart/form-data">
     <fieldset>
       <legend>Informacion General</legend>
 

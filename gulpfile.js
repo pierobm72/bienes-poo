@@ -60,7 +60,13 @@ function watchArchivos() {
   watch(paths.imagenes, versionWebp);
 }
 
+function watchcss() {
+  watch(paths.scss, css);
+}
+
 exports.css = css;
+exports.watchcss = series(css,watchcss);
+
 exports.watchArchivos = watchArchivos;
 exports.dev = series(css, watchArchivos);
 exports.default = parallel(

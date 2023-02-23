@@ -1,11 +1,60 @@
-.alerta {  
-  color: white;
-  text-transform: uppercase;
-  padding: 5px;
+.alerta {
   text-align: center;
-  margin: 10px;
-
+  font-size: 2rem;
+  color: $blanco;
+  font-weight: $bold;
+  text-transform: uppercase;
+  padding: 0.5rem;
+  margin: 1rem 0;
   &.error {
-    background-color: $rojo;
+    background-color: $alerta;
   }
+  &.exito {
+    background-color: $verde;
+  }
+
+  &.amarillo {
+    background-color: $amarillo;
+  }
+}
+
+table.propiedades {
+  margin-top: 4rem;
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: 1px solid $gris;
+  }
+
+  thead {
+    background-color: $verde;
+    th {
+      color: $blanco;
+      padding: 1.5rem;
+    }
+  }
+
+  .imagen-tabla {
+    max-width: 15rem;
+    max-height: 15rem;
+    // width: 50%;
+    // height: 100%;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  /* tr:nth-child(even) {
+        background-color: #eee;
+      } */
+
+  form {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.imagen-actualizar {
+  width: 50%;
 }
