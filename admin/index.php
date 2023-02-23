@@ -20,10 +20,12 @@ incluirTemplates("header");
 <main class="contenedor seccion">
     <?php if (intval($mensaje)  === 1) { ?>
         <p class="alerta exito">Propiedad creada correctamente</p>
+    <?php } elseif (intval($mensaje)  === 2) { ?>
+        <p class="alerta exito">Propiedad actualizada correctamente</p>
     <?php } ?>
     <h1>Administrador de bienes raices</h1>
     
-    <a href="<?= PROPIEDADES_URL ?>/crear.php" class="boton boton-verde">Crear propiedad</a>  
+    <a href="<?= URL_PROPIEDADES ?>/crear.php" class="boton boton-verde">Crear propiedad</a>  
 
     <table class="propiedades">
         <thead>
@@ -39,11 +41,11 @@ incluirTemplates("header");
             <tr>
                 <td><?= $row["id"] ?></td>
                 <td><?= $row["titulo"] ?></td>
-                <td><img src="<?php echo IMAGENES_URL .  $row["imagen"]?>" class="imagen-tabla"></td>
+                <td><img src="<?php echo URL_IMAGENES .  $row["imagen"]?>" class="imagen-tabla"></td>
                 <td>$<?= $row["precio"] ?></td>
                 <td>
-                    <a href="" class="boton-rojo-block">Eliminar</a>
-                    <a href="" class="boton-amarillo-block">Actualizar</a>
+                    <a href="#" class="boton-rojo-block">Eliminar</a>
+                    <a href="<?php echo URL_PROPIEDADES . "/actualizar.php?id={$row['id']}" ?>" class="boton-amarillo-block">Actualizar</a>
                 </td>
             </tr>
             <?php } ?>

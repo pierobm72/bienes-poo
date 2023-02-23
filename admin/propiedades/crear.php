@@ -125,9 +125,9 @@ incluirTemplates("header");
   <?php } ?>
 
   <h1>Crear</h1>
-  <a href="<?= ADMIN_URL ?>" class="boton boton-verde">Volver</a>
+  <a href="<?= URL_ADMIN ?>" class="boton boton-verde">Volver</a>
 
-  <form class="formulario" action="<?= PROPIEDADES_URL ?>/crear.php" method="POST" enctype="multipart/form-data">
+  <form class="formulario" action="<?= URL_PROPIEDADES ?>/crear.php" method="POST" enctype="multipart/form-data">
     <fieldset>
       <legend>Informacion General</legend>
 

@@ -38,6 +38,7 @@ function debuguear($mensaje, $modo = 0)
     echo "<pre>";
     var_dump($mensaje);
     echo "</pre>";
+    exit();
   }
 
   //Imprimir array en la consola

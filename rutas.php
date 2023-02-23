@@ -26,18 +26,16 @@ define('RUTA_IMAGENES', RUTA_RAIZ . "/imagenes/");
 
 //Obtener la url del dominio. Ejemplo : https://www.domiminioactual.com
 $url_actual = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-define('BASE_URL', $url_actual);
+define('URL_BASE', $url_actual);
 
 //Ruta que contiene la carpeta propiedades
-define('PROPIEDADES_URL', BASE_URL . "/admin/propiedades");
-
-
-//Ruta que contiene la carpeta propiedades
-define('ADMIN_URL', BASE_URL . "/admin");
-
+define('URL_PROPIEDADES', URL_BASE . "/admin/propiedades");
 
 
 //Ruta que contiene la carpeta propiedades
-define('IMAGENES_URL', BASE_URL . "/imagenes/");
+define('URL_ADMIN', URL_BASE . "/admin");
+
+//Ruta que contiene la carpeta propiedades
+define('URL_IMAGENES', URL_BASE . "/imagenes/");
 
 
