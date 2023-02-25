@@ -1,27 +1,54 @@
 @include tablet {
     .contenedor-anuncios {
-        @include grid(3,2rem)
+        @include grid(3, 2rem);
+
     }
 }
 
 .anuncio {
-    background-color: lighten($gris,5);
-    border: 1px lighten($grisOscuro,10);
+    background-color: lighten($gris, 5);
+    border: 1px solid darken($gris, 10);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    overflow: hidden; 
+    
+    picture {
+        height: 20rem;
 
-    .contenido-anuncio{
-        padding: 2rem;
+        img {
+            height: 100%;
+            object-fit: cover; //Para evitar que la imagen se distorsione
+        }
+    }
 
-        
-       
+
+
+    .contenido-anuncio>p {
+
+        height: 8rem;
+
+        // overflow: hidden;
+        // text-overflow: ellipsis;
     }
-    h3,p {
-          margin: 0;  
+
+    h3 {
+        //Evitar que el titulo se desborde
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
+
+    h3,
+    p {
+        margin: 0;
+
+    }
+
 }
 
 .precio {
     color: $verde;
-    font-weight: bold;
+    font-weight: $bold;
     font-size: 3rem;
 }
 
@@ -30,16 +57,18 @@
     list-style: none;
     padding: 0;
     max-width: 40rem;
-    
+
     li {
         flex: 1;
         display: flex;
+
         img {
-            flex: 0 0 .5rem;
+            flex: 0 0 3rem;
             margin-right: 1rem;
         }
-         p {
+
+        p {
             font-weight: $black;
-         }
+        }
     }
 }

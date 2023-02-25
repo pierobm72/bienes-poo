@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -31,6 +31,9 @@
 
             </div> <!-- Barra -->
 
-            <h1>Venta de cajas y Departamentos exclusivos de lujo</h1>
+            <?php if($inicio) {
+                echo "<h1>Venta de cajas y Departamentos exclusivos de lujo</h1>";
+                }
+            ?>
         </div>
     </header>

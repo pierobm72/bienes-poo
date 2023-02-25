@@ -1,39 +1,65 @@
-<?php 
-    include("./includes/templates/header.php");
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
+include_once RUTA_FUNCIONES;
+
+
+$id= $_GET["id"];
+$id  = filter_var($id,FILTER_VALIDATE_INT);
+
+if(!$id){
+    header("Location: /");
+
+}
+
+include_once RUTA_BASEDATOS;
+//Conexion a la base de datos
+$db = conectarDB();
+
+$query= "SELECT * from propiedades where id=$id";
+
+$resultado = mysqli_query($db,$query);
+
+//Validar que el registro exista en la base de datos
+if($resultado->num_rows === 0){
+    header("Location: /");
+
+}
+
+$row = mysqli_fetch_assoc($resultado);
+
+incluirTemplates("header");
 ?>
 
-    <main class="contenedor seccion contenido-centrado">
-        <h1>Casa en Venta frente al bosque</h1>
+<main class="contenedor seccion contenido-centrado">
+    <h1><?= $row['titulo'] ?></h1>
 
-        <picture>
-            <picture>
-                <source srcset="build/img/destacada.webp" type="image/webp">
-                <img loading="lazy" src="build/img/destacada.jpg" alt="Imagen de la propiedad">
-            </picture>
+    <picture>
+        <picture>          
+            <img loading="lazy" src="<?php echo URL_IMAGENES . "{$row['imagen']}"?>" alt="Imagen de la propiedad">
         </picture>
+    </picture>
 
-        <div class="resumen-propiedad">
-            <p class="precio">$ 3,000,000</p>
-            <ul class="iconos-caracteristicas">
-                <li>
-                    <img src="build/img/icono_wc.svg" alt="icono wc" loading="lazy">
-                    <p>3</p>
-                </li>
-                <li>
-                    <img src="build/img/icono_estacionamiento.svg" alt="icono estacionamiento" loading="lazy">
-                    <p>3</p>
-                </li>
-                <li>
-                    <img src="build/img/icono_dormitorio.svg " alt="icono habitaciones" loading="lazy">
-                    <p>4</p>
-                </li>
-            </ul>
+    <div class="resumen-propiedad">
+        <p class="precio"><?= $row['precio'] ?></p>
+        <ul class="iconos-caracteristicas">
+            <li>
+                <img src="build/img/icono_wc.svg" alt="icono wc" loading="lazy">
+                <p><?= $row['wc'] ?></p>
+            </li>
+            <li>
+                <img src="build/img/icono_estacionamiento.svg" alt="icono estacionamiento" loading="lazy">
+                <p><?= $row['estacionamiento'] ?></p>
+            </li>
+            <li>
+                <img src="build/img/icono_dormitorio.svg " alt="icono habitaciones" loading="lazy">
+                <p><?= $row['habitacion'] ?></p>
+            </li>
+        </ul>
 
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel quisquam repellat architecto officia porro ad, facere temporibus quas quaerat ea fugit soluta, quos dolorem praesentium. Expedita id ea corporis tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, sed, quidem animi dolor blanditiis ducimus nostrum similique cumque fugiat expedita eveniet veritatis aliquam. Libero voluptatibus non fugiat voluptatem fuga quos!</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, saepe ipsum ad quia ipsa ut sed nam nemo perspiciatis eligendi vel provident aspernatur, magnam accusamus, dolorem obcaecati error minus iusto.</p>
-        </div>
-    </main>
+        <p><?= $row['descripcion'] ?></p>
+    </div>
+</main>
 
-    <?php
+<?php
 incluirTemplates("footer");
 ?>

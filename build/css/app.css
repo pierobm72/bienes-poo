@@ -626,18 +626,34 @@ h4 {
 }
 .anuncio {
   background-color: #eeeeee;
-  border: 1px #4d4d4d;
-}
-.anuncio .contenido-anuncio {
+  border: 1px solid #c8c8c8;
+  margin-bottom: 2rem;
   padding: 2rem;
+  overflow: hidden;
 }
-.anuncio h3, .anuncio p {
+.anuncio picture {
+  height: 20rem;
+}
+.anuncio picture img {
+  height: 100%;
+  object-fit: cover;
+}
+.anuncio .contenido-anuncio > p {
+  height: 8rem;
+}
+.anuncio h3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.anuncio h3,
+.anuncio p {
   margin: 0;
 }
 
 .precio {
   color: #71B100;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 3rem;
 }
 
@@ -652,7 +668,7 @@ h4 {
   display: flex;
 }
 .iconos-caracteristicas li img {
-  flex: 0 0 0.5rem;
+  flex: 0 0 3rem;
   margin-right: 1rem;
 }
 .iconos-caracteristicas li p {
