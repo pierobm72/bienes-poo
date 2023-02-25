@@ -1,3 +1,12 @@
+<?php 
+    if(!isset($_SESSION)){
+        session_start();        
+    }
+
+    $auth = $_SESSION["login"] ?? false;
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -23,10 +32,17 @@
                 </div>
 
                 <div class="navegacion">
-                    <a href="nosotros.php">Nosotros</a>
-                    <a href="anuncios.php">Anuncios</a>
-                    <a href="blog.php">Blog</a>
-                    <a href="contacto.php">Contacto</a>
+                    <a href="<?php echo URL_BASE . "/nosotros.php"?>">Nosotros</a>
+                    <a href="<?php echo URL_BASE . "/anuncios.php"?>">Anuncios</a>
+                    <a href="<?php echo URL_BASE . "/blog.php"?>">Blog</a>
+                    <a href="<?php echo URL_BASE . "/contacto.php"?>">Contacto</a>
+                    <?php if($auth) { ?>                        
+                    <a href="<?php echo URL_ADMIN . "/index.php"?>" class="boton-sesion iniciar">Admin</a>
+                    <a href="<?php echo URL_BASE . "/cerrar-sesion.php"?>" class="boton-sesion cerrar">Cerrar sesion</a>
+                    <?php } ?>
+                    <?php if(!$auth) { ?>                        
+                    <a href="<?php echo URL_BASE . "/login.php"?>" class="boton-sesion iniciar">Iniciar sesion</a>
+                    <?php } ?>
                 </div>
 
             </div> <!-- Barra -->

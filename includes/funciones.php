@@ -7,14 +7,26 @@ function incluirTemplates(string $nombre, bool $inicio = false)
   include RUTA_TEMPLATES . "/{$nombre}.php";
 }
 
-/* Delimitar caracteres */
-function truncate(string $texto, int $cantidad = 60) : string
+
+function estaAutenticado(): bool
 {
-    if(strlen($texto) >= $cantidad) {
-        return substr($texto, 0, $cantidad) . "...";
-    } else {
-        return $texto;
-    }
+  session_start();
+  $auth = $_SESSION["login"];
+  if ($auth) {
+    return true;
+  }
+
+  return false;
+}
+
+/* Delimitar caracteres */
+function truncate(string $texto, int $cantidad = 60): string
+{
+  if (strlen($texto) >= $cantidad) {
+    return substr($texto, 0, $cantidad) . "...";
+  } else {
+    return $texto;
+  }
 }
 
 

@@ -58,3 +58,21 @@ table.propiedades {
 .imagen-actualizar {
   width: 50%;
 }
+
+.boton-sesion {
+  padding: 5px 15px;
+
+  &.iniciar {
+    background-color: $verde;
+    &:hover {
+      background-color: darken($verde, 8);
+    }
+  }
+
+  &.cerrar {
+    background-color: $alerta;
+    &:hover {
+      background-color: darken($alerta, 8);
+    }
+  }
+}

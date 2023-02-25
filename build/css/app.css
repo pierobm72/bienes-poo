@@ -379,6 +379,11 @@ h4 {
   width: 100%;
 }
 
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .boton-amarillo {
   background-color: #E08709;
   color: #FFFFFF;
@@ -916,5 +921,21 @@ table.propiedades form {
 
 .imagen-actualizar {
   width: 50%;
+}
+
+.boton-sesion {
+  padding: 5px 15px;
+}
+.boton-sesion.iniciar {
+  background-color: #71B100;
+}
+.boton-sesion.iniciar:hover {
+  background-color: #578800;
+}
+.boton-sesion.cerrar {
+  background-color: rgb(202, 40, 40);
+}
+.boton-sesion.cerrar:hover {
+  background-color: #a82121;
 }
 /*# sourceMappingURL=app.css.map */
