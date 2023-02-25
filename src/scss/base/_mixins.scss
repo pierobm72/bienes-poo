@@ -33,11 +33,11 @@
     margin-top: calc($separacion / 2) ;
     display: $display;
     transition: background-color 300ms ease-in;
-    border: none;
+    border: none;    
+    line-height: 1.8;
 
     &:hover {
         background-color: darken($bgcolor,5);
         cursor: pointer;
     }
 }
-

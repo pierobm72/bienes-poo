@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $estacionamiento = mysqli_real_escape_string($db, $_POST["estacionamiento"]);
     $vendedor_id = mysqli_real_escape_string($db, $_POST["vendedor_id"]);
     $creado = date("Y/m/d");
-    $imagen = $_FILES["imagen"];
+    $imagen = $_FILES["imagen"]; //Imagen que sube el usuario
 
 
     if ($titulo === "") {
@@ -136,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //Validar que la consulta se ha enviado
         if ($resultado) {
+            //Redireccionar al usuario
             header("Location: /admin?resultado=2");
         } else {
             echo "Fallo al insertar en la base de datos";

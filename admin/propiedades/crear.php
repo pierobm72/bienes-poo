@@ -169,7 +169,7 @@ incluirTemplates("header");
       </select>
     </fieldset>
 
-    <input type="submit" value="Enviar" class="boton boton-verde">
+    <input type="submit" value="Crear" class="boton boton-verde">
   </form>
 </main>
 
