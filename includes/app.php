@@ -5,3 +5,9 @@ require RUTA_BASEDATOS;
 require RUTA_AUTOLOAD;
 
 use App\Propiedad;
+
+//Conectarse a la base de datos
+$db = conectarDB();
+
+//Colocar la conexion a la base de datos en la clase
+Propiedad::setDB($db);

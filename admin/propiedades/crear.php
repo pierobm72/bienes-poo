@@ -1,9 +1,9 @@
 <?php
-
-use App\Propiedad;
-
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
 include_once RUTA_APP;
+
+use App\Propiedad;
+use Intervention\Image\ImageManagerStatic as Image;
 
 estaAutenticado();
 
@@ -16,7 +16,7 @@ $resultado = mysqli_query($db, $consulta);
 
 
 //Arreglo que contiene los errroes;
-$errores = [];
+$errores = Propiedad::getErrores();
 
 // Inicializar las variables en blanco
 $titulo = "";
@@ -29,85 +29,47 @@ $vendedor_id = "";
 
 //Verificar que la peticion de datos sea de tipo POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-  //Almacenar los datos ingresados por el usuario en el formulario
-  //Sanitizar los datos
-  $titulo = mysqli_real_escape_string($db, $_POST["titulo"]);
-  $precio = mysqli_real_escape_string($db, $_POST["precio"]);
-  $descripcion = mysqli_real_escape_string($db, $_POST["descripcion"]);
-  $habitacion = mysqli_real_escape_string($db, $_POST["habitacion"]);
-  $wc = mysqli_real_escape_string($db, $_POST["wc"]);
-  $estacionamiento = mysqli_real_escape_string($db, $_POST["estacionamiento"]);
-  $vendedor_id = mysqli_real_escape_string($db, $_POST["vendedor_id"]);
-  $creado = date("Y/m/d");
-  $imagen = $_FILES["imagen"];
+  //Crear una nueva instancia
+  $propiedad = new Propiedad($_POST);
 
 
-  if ($titulo === "") {
-    $errores[] = "El titulo es obligatorio";
-  }
-
-  if ($precio === "") {
-    $errores[] = "El precio es obligatorio";
-  }
-
-  if (strlen($descripcion) < 1) {
-    $errores[] = "La descripcion es obligatoria y debe ser mayor a 50 caracteres";
-  }
-
-  if ($habitacion === "") {
-    $errores[] = "La habitacion es obligatoria";
-  }
-
-  if ($wc === "") {
-    $errores[] = "El baño es obligatoria";
-  }
-
-  if ($estacionamiento === "") {
-    $errores[] = "El numero de lugares de estacionamiento es obligatoria";
-  }
-
-  if ($vendedor_id === "") {
-    $errores[] = "Elige un vendedor";
-  }
-
-  if ($imagen["name"] === "" || $imagen["error"]) {
-    $errores[] = "La imagen es obligatoria";
-  }
-
-  $medida = 3000 * 100;
-  if ($imagen["size"] > $medida) {
-    $errores[] = "La imagen es muy grande";
-  }
-
-  //Verificar que los campos de el formulario este lleno
-  if (empty($errores)) {
-
-    // --- SUBIDA DE ARCHIVOS ---
-
-    //Ruta de la carpeta imagenes
-    $carpetaImagenes = RUTA_IMAGENES; 
-    //Verifica que la carpeta imagenes no exista
-    if (is_dir($carpetaImagenes) === false) { 
-      //Crear la carpeta imagenes
-      mkdir($carpetaImagenes); 
-    }
+  //Verificar que se hay subido una imagen
+  if ($_FILES['imagen']['tmp_name']) {
 
     //Obtener extension de la imagen
     $extensionImagen =  strrchr($_FILES['imagen']['name'], '.');
     //Generar nombre unico
-    $nombreImagen = md5( uniqid(rand(),true)) . $extensionImagen;
+    $nombreImagen = md5(uniqid(rand(), true)) . $extensionImagen;
 
-    //Subir la imagen
-    move_uploaded_file($imagen['tmp_name'],$carpetaImagenes . $nombreImagen );
+    //Almacenar la imagen temporal en una variable usando Intervetion Image
+    $image = Image::make($_FILES['imagen']['tmp_name']);
+    // Redimensionar proporcionalmente
+    $image->resize(800, null, function ($constraint) {
+      $constraint->aspectRatio();
+    });
 
+    //Setear la imagen
+    $propiedad->setImagen($nombreImagen);
+  }
 
-    //Almacenar los datos en una query
-    $query = "INSERT INTO propiedades (titulo,precio,imagen,descripcion,habitacion,wc,estacionamiento,creado,vendedor_id) ";
-    $query .= "VALUES ('$titulo','$precio','$nombreImagen','$descripcion','$habitacion','$wc','$estacionamiento','$creado','$vendedor_id');";
+  $errores = $propiedad->validar();
 
-    //Insertar la consulta a la base de datos
-    $resultado = mysqli_query($db, $query);
+  //Verificar que los campos de el formulario este lleno
+  if (empty($errores)) {
+
+    // --- SUBIDA DE ARCHIVOS ---    
+
+    //Verifica que la carpeta imagenes no exista
+    if (is_dir(RUTA_IMAGENES) === false) {
+      //Crear la carpeta imagenes
+      mkdir(RUTA_IMAGENES);
+    }
+
+    //Guardar la imagen en la carpeta imagenes del servidor
+    $image->save(RUTA_IMAGENES . $nombreImagen);
+
+    //Insertar los registros en la base de datos
+    $resultado = $propiedad->guardar();
 
     //Validar que la consulta se ha enviado
     if ($resultado) {
@@ -115,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
       echo "Fallo al insertar en la base de datos";
       echo $resultado;
-
     }
   }
 }
