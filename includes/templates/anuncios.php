@@ -1,9 +1,6 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_FUNCIONES;
 
-//Importar base de datos
-include_once RUTA_BASEDATOS;
+//Base de datos
 $db = conectarDB();
 
 //Consultar

@@ -1,12 +1,11 @@
 <?php
+
+use App\Propiedad;
+
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_FUNCIONES;
+include_once RUTA_APP;
 
-$auth = estaAutenticado();
-if(!$auth) header("Location: " .URL_BASE);
-
-
-include_once RUTA_BASEDATOS;
+estaAutenticado();
 
 //Conectarse a la base de datos
 $db = conectarDB();

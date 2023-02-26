@@ -8,15 +8,13 @@ function incluirTemplates(string $nombre, bool $inicio = false)
 }
 
 
-function estaAutenticado(): bool
+function estaAutenticado()
 {
   session_start();
-  $auth = $_SESSION["login"];
-  if ($auth) {
-    return true;
+  if (!$_SESSION["login"]) {
+    header("Location: " .URL_BASE);
   }
 
-  return false;
 }
 
 /* Delimitar caracteres */

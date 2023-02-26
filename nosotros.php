@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_INCLUDES . "/funciones.php";
+include_once RUTA_APP;
 incluirTemplates("header");
 ?>
 

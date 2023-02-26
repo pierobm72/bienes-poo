@@ -1,6 +1,5 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_FUNCIONES;
 
 
 $id= $_GET["id"];
@@ -11,7 +10,8 @@ if(!$id){
 
 }
 
-include_once RUTA_BASEDATOS;
+include_once RUTA_APP;
+
 //Conexion a la base de datos
 $db = conectarDB();
 

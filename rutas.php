@@ -21,6 +21,13 @@ define('RUTA_BASEDATOS', RUTA_RAIZ . "/includes/config/database.php");
 //Ruta que contiene carpeta de imagenes que se sube por el formulario
 define('RUTA_IMAGENES', RUTA_RAIZ . "/imagenes/");
 
+//Ruta que contiene el autoload
+define('RUTA_AUTOLOAD', RUTA_RAIZ . "/vendor/autoload.php");
+
+
+//Ruta que contiene el autoload
+define('RUTA_APP', RUTA_RAIZ . "/includes/app.php");
+
 
 //DIRECTORIOS PARA HTML
 

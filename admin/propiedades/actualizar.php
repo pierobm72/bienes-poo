@@ -1,11 +1,9 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_FUNCIONES;
+include_once RUTA_APP;
 
-$auth = estaAutenticado();
-if(!$auth) header("Location: " . URL_BASE);
+estaAutenticado();
 
-include_once RUTA_BASEDATOS;
 
 //Validar que el id sea entero
 $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);

@@ -1,7 +1,6 @@
 <?php 
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_FUNCIONES;
-include_once RUTA_BASEDATOS;
+include_once RUTA_APP;
 
 $db = conectarDB();
 

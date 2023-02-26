@@ -1,12 +1,9 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
-include_once RUTA_FUNCIONES;
-
-$auth = estaAutenticado();
-if(!$auth) header("Location: " .URL_BASE);
+include_once RUTA_APP;
+estaAutenticado();
 
 
-require_once RUTA_BASEDATOS;
 
 //Importar la conexion
 $db = conectarDB();
