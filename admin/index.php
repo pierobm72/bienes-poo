@@ -3,16 +3,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
 include_once RUTA_APP;
 estaAutenticado();
 
-
-
-//Importar la conexion
-$db = conectarDB();
-
-//Escribir el query
-$query = "SELECT * FROM propiedades";
-
-//Consultar a la base de datos
-$resultado = mysqli_query($db, $query);
+use App\Propiedad;
+//Implementar metodo para obtener todas las propiedades
+$propiedades = Propiedad::all();
 
 //Mostrar mensaje condicional
 $mensaje = $_GET["resultado"] ?? false;
@@ -23,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($id) {
         //Eliminar imagen del server
-        $query = "SELECT imagen from propiedades where id=$id";        
+        $query = "SELECT imagen from propiedades where id=$id";
         $resultado = mysqli_query($db, $query);
         $propiedad = mysqli_fetch_assoc($resultado);
 
@@ -63,18 +56,18 @@ incluirTemplates("header");
         </thead>
         <!-- Mostrar los resultados con php -->
         <tbody>
-            <?php while ($row = mysqli_fetch_assoc($resultado)) { ?>
+            <?php foreach ($propiedades as $propiedad) { ?>
                 <tr>
-                    <td><?= $row["id"] ?></td>
-                    <td><?= $row["titulo"] ?></td>
-                    <td><img src="<?php echo URL_IMAGENES .  $row["imagen"] ?>" class="imagen-tabla"></td>
-                    <td>$<?= $row["precio"] ?></td>
+                    <td><?= $propiedad->id ?></td>
+                    <td><?= $propiedad->titulo ?></td>
+                    <td><img src="<?php echo URL_IMAGENES .  $propiedad->imagen ?>" class="imagen-tabla"></td>
+                    <td>$<?= $propiedad->precio ?></td>
                     <td>
                         <form method="POST">
-                            <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                            <input type="hidden" name="id" value="<?= $propiedad->id ?>">
                             <button class="boton-rojo-block w-100 m-0" type="submit">Eliminar</button>
                         </form>
-                        <a href="<?php echo URL_PROPIEDADES . "/actualizar.php?id={$row['id']}" ?>" class="boton-amarillo-block m-0">Actualizar</a>
+                        <a href="<?php echo URL_PROPIEDADES . "/actualizar.php?id={$propiedad->id}" ?>" class="boton-amarillo-block m-0">Actualizar</a>
                     </td>
                 </tr>
             <?php } ?>

@@ -8,6 +8,9 @@ function incluirTemplates(string $nombre, bool $inicio = false)
 }
 
 
+/**
+ * Funcion que verifica si el admin ha iniciado sesion, si no ha iniciado redirige al home
+ */
 function estaAutenticado()
 {
   session_start();
