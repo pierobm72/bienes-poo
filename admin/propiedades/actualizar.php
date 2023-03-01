@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use App\Vendedor;
 use Intervention\Image\ImageManagerStatic as Image;
 
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
@@ -19,8 +20,7 @@ if (!$id) header("Location: " . URL_ADMIN);
 $propiedad = Propiedad::find($id);
 
 // Consultar para obtener los vendedores de la base de ddaots
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
+$vendedores = Vendedor::all();
 
 
 //Arreglo que contiene los errroes;
@@ -62,18 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $image->save(RUTA_IMAGENES . $nombreImagen);
         }
-        
 
-        $resultado = $propiedad->guardar();
-
-        //Validar que la consulta se ha enviado
-        if ($resultado) {
-            //Redireccionar al usuario
-            header("Location: /admin?resultado=2");
-        } else {
-            echo "Fallo al insertar en la base de datos";
-            echo $resultado;
-        }
+        $propiedad->guardar();
     }
 }
 

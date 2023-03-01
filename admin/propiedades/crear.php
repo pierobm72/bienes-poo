@@ -2,21 +2,17 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
 include_once RUTA_APP;
 
+use App\Vendedor;
 use App\Propiedad;
 use Intervention\Image\ImageManagerStatic as Image;
 
 estaAutenticado();
 
-//Conectarse a la base de datos
-$db = conectarDB();
 
 $propiedad = new Propiedad();
 
 // Consultar para obtener los vendedores de la base de ddaots
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
-
-
+$vendedores = Vendedor::all();
 
 //Arreglo que contiene los errroes;
 $errores = Propiedad::getErrores();
@@ -64,15 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $image->save(RUTA_IMAGENES . $nombreImagen);
 
     //Insertar los registros en la base de datos
-    $resultado = $propiedad->guardar();
-
-    //Validar que la consulta se ha enviado
-    if ($resultado) {
-      header("Location: /admin?resultado=1");
-    } else {
-      echo "Fallo al insertar en la base de datos";
-      echo $resultado;
-    }
+    $propiedad->guardar();
   }
 }
 

@@ -4,6 +4,8 @@ include_once RUTA_APP;
 estaAutenticado();
 
 use App\Propiedad;
+use App\Vendedor;
+
 //Implementar metodo para obtener todas las propiedades
 $propiedades = Propiedad::all();
 
