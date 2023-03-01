@@ -52,17 +52,19 @@ class Propiedad
     self::$db = $database;
   }
 
-  public function guardar(){
-    if(!empty($this->id)){
+  public function guardar()
+  {
+    if (!empty($this->id)) {
       //Actualizar
       return $this->actualizar();
     } else {
       //Crear nuevo registro
       return $this->crear();
     }
-
   }
-
+  /**
+   * Crear registro en la base de datos
+   */
   public function crear()
   {
     $atributos = $this->sanitizarAtributos();
@@ -76,22 +78,41 @@ class Propiedad
     $resultado = self::$db->query($query);
     return $resultado;
   }
-
-  public function actualizar(){
+  /**
+   * Actualizar registro en la base de datos
+   */
+  public function actualizar()
+  {
     $atributos = $this->sanitizarAtributos();
 
     $valores = [];
-    foreach($atributos as $key => $value){
+    foreach ($atributos as $key => $value) {
       $valores[] = "{$key}='{$value}'";
     }
-    $campos = join(", ",$valores);
+    $campos = join(", ", $valores);
 
-    $query = "UPDATE propiedades SET $campos WHERE id = '" . self::$db->escape_string($this->id)."' ";
+    $query = "UPDATE propiedades SET $campos WHERE id = '" . self::$db->escape_string($this->id) . "' ";
     $query .= "LIMIT 1";
 
     $resultado = self::$db->query($query);
 
     return $resultado;
+  }
+  
+  /**
+   * Eliminar registro de la base de datos
+   */
+  public function eliminar()
+  {
+    $query = "DELETE FROM propiedades WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+    $query .= "LIMIT 1";
+
+    $resultado = self::$db->query($query);
+
+    if ($resultado) {
+      $this->borrarImagen();
+      header("Location: /admin?resultado=3");
+    }
   }
 
   /**
@@ -122,17 +143,22 @@ class Propiedad
   public function setImagen($imagen)
   {
     //Elimina imagen previa
-    if(!empty($this->id)){
-      //Comprobar si existe archivo
-      $existeArchivo = file_exists(RUTA_IMAGENES . $this->imagen);
-      if($existeArchivo){
-        unlink(RUTA_IMAGENES . $this->imagen);
-      }
+    if (!empty($this->id)) {
+      $this->borrarImagen();
     }
 
     //Asignar al atributo de imagen el nombre de la imagen
     if ($imagen) {
       $this->imagen = $imagen;
+    }
+  }
+
+  public function borrarImagen()
+  {
+    //Comprobar si existe archivo
+    $existeArchivo = file_exists(RUTA_IMAGENES . $this->imagen);
+    if ($existeArchivo) {
+      unlink(RUTA_IMAGENES . $this->imagen);
     }
   }
 
@@ -261,6 +287,5 @@ class Propiedad
         $this->$key = $value;
       }
     }
-
   }
 }
