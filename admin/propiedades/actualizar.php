@@ -1,4 +1,7 @@
 <?php
+
+use App\Propiedad;
+
 include_once $_SERVER['DOCUMENT_ROOT'] . "/rutas.php";
 include_once RUTA_APP;
 
@@ -10,13 +13,9 @@ $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
 
 if (!$id) header("Location: " . URL_ADMIN);
 
-//Conectarse a la base de datos
-$db = conectarDB();
 
 //Obtener los datos de la propiedad con el id
-$consulta = "SELECT * FROM propiedades WHERE id=$id";
-$resultado = mysqli_query($db, $consulta);
-$propiedad = mysqli_fetch_assoc($resultado);
+$propiedad = Propiedad::find($id);
 
 // Consultar para obtener los vendedores de la base de ddaots
 $consulta = "SELECT * FROM vendedores";
@@ -24,17 +23,9 @@ $resultado = mysqli_query($db, $consulta);
 
 
 //Arreglo que contiene los errroes;
-$errores = [];
+$errores = Propiedad::getErrores();
 
-// Inicializar las variables con los resultados de la base de datos
-$titulo = $propiedad["titulo"];
-$precio = $propiedad["precio"];
-$descripcion = $propiedad["descripcion"];
-$habitacion = $propiedad["habitacion"];
-$wc = $propiedad["wc"];
-$estacionamiento = $propiedad["estacionamiento"];
-$vendedor_id = $propiedad["vendedor_id"];
-$imagenPropiedad = $propiedad["imagen"];
+
 
 //Verificar que la peticion de datos sea de tipo POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -159,48 +150,7 @@ incluirTemplates("header");
     <a href="<?= URL_ADMIN ?>" class="boton boton-verde">Volver</a>
 
     <form class="formulario" enctype="multipart/form-data" method="POST">
-        <fieldset>
-            <legend>Informacion General</legend>
-
-            <label for="titulo">Titulo:</label>
-            <input type="text" id="titulo" placeholder="Titulo Propiedad" name="titulo" value="<?= $titulo ?>">
-
-            <label for="precio">Precio:</label>
-            <input type="number" id="precio" placeholder="Precio" name="precio" value="<?= $precio ?>">
-
-            <label for="imagen">Imagen:</label>
-            <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
-            <img src="<?php echo URL_IMAGENES .  $imagenPropiedad ?>" class="imagen-actualizar">
-
-            <label for="descripcion">Descripcion:</label>
-            <textarea id="descripcion" name="descripcion"><?= $descripcion ?></textarea>
-
-        </fieldset>
-
-        <fieldset>
-            <legend>Informacion Propiedad</legend>
-
-            <label for="habitacion">Habitaciones:</label>
-            <input type="number" min="1" max="9" id="habitacion" placeholder="Ejm. 3" name="habitacion" value="<?= $habitacion ?>">
-
-            <label for="wc:">Baños:</label>
-            <input type="number" min="1" max="9" id="wc:" placeholder="Ejm. 3" name="wc" value="<?= $wc ?>">
-
-            <label for="estacionamiento:">Estacionamiento:</label>
-            <input type="number" min="1" max="9" id="estacionamiento:" placeholder="Ejm. 3" name="estacionamiento" value="<?= $estacionamiento ?>">
-
-        </fieldset>
-
-        <fieldset>
-            <legend>Vendedor</legend>
-            <select name="vendedor_id">
-                <option value="">--Elige el vendedor --</option>
-                <?php while ($row = mysqli_fetch_assoc($resultado)) { ?>
-                    <option <?php echo $vendedor_id === $row["id"] ? "selected" : "" ?> value="<?= $row["id"] ?>"><?php echo $row['nombre'] . " " . $row['apellido']; ?></option>
-                <?php } ?>
-            </select>
-        </fieldset>
-
+        <?php include RUTA_TEMPLATES . "formulario_propiedades.php" ?>
         <input type="submit" value="Actualizar Propiedad" class="boton boton-verde">
     </form>
 </main>

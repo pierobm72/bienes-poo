@@ -44,7 +44,7 @@ incluirTemplates("header");
     <?php } ?>
     <h1>Administrador de bienes raices</h1>
 
-    <a href="<?= URL_PROPIEDADES ?>/crear.php" class="boton boton-verde">Crear propiedad</a>
+    <a href="<?= URL_PROPIEDADES ?>crear.php" class="boton boton-verde">Crear propiedad</a>
 
     <table class="propiedades">
         <thead>
@@ -67,7 +67,7 @@ incluirTemplates("header");
                             <input type="hidden" name="id" value="<?= $propiedad->id ?>">
                             <button class="boton-rojo-block w-100 m-0" type="submit">Eliminar</button>
                         </form>
-                        <a href="<?php echo URL_PROPIEDADES . "/actualizar.php?id={$propiedad->id}" ?>" class="boton-amarillo-block m-0">Actualizar</a>
+                        <a href="<?php echo URL_PROPIEDADES . "actualizar.php?id={$propiedad->id}" ?>" class="boton-amarillo-block m-0">Actualizar</a>
                     </td>
                 </tr>
             <?php } ?>

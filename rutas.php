@@ -9,7 +9,7 @@ define('RUTA_RAIZ', $_SERVER['DOCUMENT_ROOT']);
 define('RUTA_INCLUDES', RUTA_RAIZ . "/includes");
 
 //Ruta que contiene la carpeta donde estan los templates
-define('RUTA_TEMPLATES', RUTA_RAIZ . "/includes/templates");
+define('RUTA_TEMPLATES', RUTA_RAIZ . "/includes/templates/");
 
 //Ruta que contiene la carpeta donde estan los funciones
 define('RUTA_FUNCIONES', RUTA_RAIZ . "/includes/funciones.php");
@@ -36,7 +36,7 @@ $url_actual = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" 
 define('URL_BASE', $url_actual);
 
 //Ruta que contiene la carpeta propiedades
-define('URL_PROPIEDADES', URL_BASE . "/admin/propiedades");
+define('URL_PROPIEDADES', URL_BASE . "/admin/propiedades/");
 
 
 //Ruta que contiene la carpeta propiedades

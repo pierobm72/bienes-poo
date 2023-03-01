@@ -68,3 +68,13 @@ function debuguear($mensaje, $modo = 0)
   $object = json_encode($mensaje);
   print_r('<script>console.log(' . $object . ')</script>');
 }
+
+/**
+ * Sanitizar el HTML
+ * @return string String sanitizado
+ */
+function s($string) : string{
+  $stringSanitisado = htmlspecialchars($string);
+  return $stringSanitisado;
+
+}

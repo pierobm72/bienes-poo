@@ -81,6 +81,17 @@ class Propiedad
 
   }
   
+  /**
+   * Lista el registro mediante su identificador
+   * @param string $id  Identificador del registro
+   * @return object
+   */
+  public static function find($id){
+    $query = "SELECT * FROM propiedades WHERE id= $id";
+    $resultado = self::consultarSQL($query);
+
+    return array_shift($resultado);
+  }
 
   //Subida de archivos
   public function setImagen($imagen)
@@ -93,7 +104,7 @@ class Propiedad
 
   /**
    * Arreglo que contiene los errores de validacion
-   * @return array
+   * @return array Arreglo que contiene los errores de validacion
    */
   public static function getErrores()
   {
@@ -143,7 +154,7 @@ class Propiedad
   /**
    * Hace una consulta sql a la base de datos y devuelve un arreglo de objetos de la consulta SQL
    * @param string $query Consulta SQL
-   * @return array
+   * @return array Arreglo de objetos 
    */
   public static function consultarSQL($query){
     //Consultar la base de datos
