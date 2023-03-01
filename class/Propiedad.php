@@ -52,9 +52,19 @@ class Propiedad
     self::$db = $database;
   }
 
-  public function guardar()
-  {
+  public function guardar(){
+    if(!empty($this->id)){
+      //Actualizar
+      return $this->actualizar();
+    } else {
+      //Crear nuevo registro
+      return $this->crear();
+    }
 
+  }
+
+  public function crear()
+  {
     $atributos = $this->sanitizarAtributos();
 
     $columnas = join(", ", array_keys($atributos));
@@ -63,6 +73,21 @@ class Propiedad
     //Consulta SQL
     $query = "INSERT INTO propiedades ($columnas) VALUES ('$valores')";
 
+    $resultado = self::$db->query($query);
+    return $resultado;
+  }
+
+  public function actualizar(){
+    $atributos = $this->sanitizarAtributos();
+
+    $valores = [];
+    foreach($atributos as $key => $value){
+      $valores[] = "{$key}='{$value}'";
+    }
+    $campos = join(", ",$valores);
+
+    $query = "UPDATE propiedades SET $campos WHERE id = '" . self::$db->escape_string($this->id)."' ";
+    $query .= "LIMIT 1";
 
     $resultado = self::$db->query($query);
 
@@ -78,15 +103,15 @@ class Propiedad
     $query = "SELECT * FROM propiedades";
     $resultado = self::consultarSQL($query);
     return $resultado;
-
   }
-  
+
   /**
    * Lista el registro mediante su identificador
    * @param string $id  Identificador del registro
    * @return object
    */
-  public static function find($id){
+  public static function find($id)
+  {
     $query = "SELECT * FROM propiedades WHERE id= $id";
     $resultado = self::consultarSQL($query);
 
@@ -96,6 +121,15 @@ class Propiedad
   //Subida de archivos
   public function setImagen($imagen)
   {
+    //Elimina imagen previa
+    if(!empty($this->id)){
+      //Comprobar si existe archivo
+      $existeArchivo = file_exists(RUTA_IMAGENES . $this->imagen);
+      if($existeArchivo){
+        unlink(RUTA_IMAGENES . $this->imagen);
+      }
+    }
+
     //Asignar al atributo de imagen el nombre de la imagen
     if ($imagen) {
       $this->imagen = $imagen;
@@ -156,13 +190,14 @@ class Propiedad
    * @param string $query Consulta SQL
    * @return array Arreglo de objetos 
    */
-  public static function consultarSQL($query){
+  public static function consultarSQL($query)
+  {
     //Consultar la base de datos
     $resultado = self::$db->query($query);
 
     //Iterar los resultdos
     $array = [];
-    while($registro = $resultado->fetch_assoc()){
+    while ($registro = $resultado->fetch_assoc()) {
       $array[] = self::crearObjeto($registro);
     }
     //Liberar la memoria
@@ -170,17 +205,18 @@ class Propiedad
 
     //Retornar los resultados
     return $array;
-}
+  }
   /**
    * Crea un objeto de la clase actual a partir de un arreglo asociativo
    * @param array $registro Arreglo asociativo que contiene los registros
    * @return object
    */
-  protected static function crearObjeto($registro){
+  protected static function crearObjeto($registro)
+  {
     $objeto = new self;
 
-    foreach($registro as $key => $value){
-      if(property_exists($objeto,$key)){
+    foreach ($registro as $key => $value) {
+      if (property_exists($objeto, $key)) {
         $objeto->$key = $value;
       }
     }
@@ -216,5 +252,15 @@ class Propiedad
       $sanitizado[$key]  = self::$db->escape_string($value);
     }
     return $sanitizado;
+  }
+
+  public function sincronizar($args = [])
+  {
+    foreach ($args as $key => $value) {
+      if (property_exists($this, $key) && !is_null($value)) {
+        $this->$key = $value;
+      }
+    }
+
   }
 }

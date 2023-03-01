@@ -24,20 +24,20 @@ $errores = Propiedad::getErrores();
 
 //Verificar que la peticion de datos sea de tipo POST 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  
   //Crear una nueva instancia
-  $propiedad = new Propiedad($_POST);
-
+  $propiedad = new Propiedad($_POST['propiedad']);
 
   //Verificar que se hay subido una imagen
-  if ($_FILES['imagen']['tmp_name']) {
+  if ($_FILES['propiedad']['tmp_name']['imagen']) {
 
     //Obtener extension de la imagen
-    $extensionImagen =  strrchr($_FILES['imagen']['name'], '.');
+    $extensionImagen =  strrchr($_FILES['propiedad']['name']['imagen'], '.');
     //Generar nombre unico
     $nombreImagen = md5(uniqid(rand(), true)) . $extensionImagen;
 
     //Almacenar la imagen temporal en una variable usando Intervetion Image
-    $image = Image::make($_FILES['imagen']['tmp_name']);
+    $image = Image::make($_FILES['propiedad']['tmp_name']['imagen']);
     // Redimensionar proporcionalmente
     $image->resize(800, null, function ($constraint) {
       $constraint->aspectRatio();
