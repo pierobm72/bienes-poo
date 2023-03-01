@@ -1,46 +1,40 @@
 <?php
 
-//Base de datos
-$db = conectarDB();
-
-//Consultar
-if(isset($limite)){
-    $query = "SELECT * FROM propiedades LIMIT $limite";
+use App\Propiedad;
+$propiedades = Propiedad::all();
+if(strpos($_SERVER["SCRIPT_NAME"],"anuncios") !== false) {
+    $propiedades = Propiedad::all();
 } else {
-    $query = "SELECT * FROM propiedades";
+    $propiedades = Propiedad::get(3);
 }
-
-//Obtener resultados
-$resultado = mysqli_query($db, $query);
-
 
 ?>
 
 <div class="contenedor-anuncios">
-    <?php while ($row = mysqli_fetch_assoc($resultado)) { ?>
+    <?php foreach($propiedades as $propiedad) { ?>
         <div class="anuncio">
             <picture>
-                <img src="<?php echo URL_IMAGENES . $row["imagen"] ?>" alt="Anuncio">
+                <img src="<?php echo URL_IMAGENES . $propiedad->imagen ?>" alt="Anuncio">
             </picture>
             <div class="contenido-anuncio">
-                <h3><?= $row['titulo'] ?></h3>
-                <p><?php echo truncate($row['descripcion']);?></p>
-                <p class="precio"><?= $row['precio'] ?></p>
+                <h3><?= $propiedad->titulo ?></h3>
+                <p><?php echo truncate($propiedad->descripcion);?></p>
+                <p class="precio"><?= $propiedad->precio ?></p>
                 <ul class="iconos-caracteristicas">
                     <li>
                         <img src="build/img/icono_wc.svg" alt="icono wc" loading="lazy">
-                        <p><?= $row['wc'] ?></p>
+                        <p><?= $propiedad->wc ?></p>
                     </li>
                     <li>
                         <img src="build/img/icono_estacionamiento.svg" alt="icono estacionamiento" loading="lazy">
-                        <p><?= $row['estacionamiento'] ?></p>
+                        <p><?= $propiedad->estacionamiento ?></p>
                     </li>
                     <li>
                         <img src="build/img/icono_dormitorio.svg " alt="icono habitaciones" loading="lazy">
-                        <p><?= $row['habitacion'] ?></p>
+                        <p><?= $propiedad->habitacion ?></p>
                     </li>
                 </ul>
-                <a href="<?php echo URL_BASE . "/anuncio.php?id={$row['id']}" ?>" class="boton-amarillo-block">Ver propiedad</a>
+                <a href="<?php echo URL_BASE . "/anuncio.php?id={$propiedad->id}" ?>" class="boton-amarillo-block">Ver propiedad</a>
             </div> <!-- contenido anuncio -->
         </div> <!-- anuncio -->
     <?php } ?>

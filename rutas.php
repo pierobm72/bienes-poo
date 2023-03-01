@@ -39,6 +39,10 @@ define('URL_BASE', $url_actual);
 define('URL_PROPIEDADES', URL_BASE . "/admin/propiedades/");
 
 
+//Ruta que contiene la carpeta vendedores
+define('URL_VENDEDORES', URL_BASE . "/admin/vendedores/");
+
+
 //Ruta que contiene la carpeta propiedades
 define('URL_ADMIN', URL_BASE . "/admin");
 

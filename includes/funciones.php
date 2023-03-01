@@ -71,10 +71,41 @@ function debuguear($mensaje, $modo = 0)
 
 /**
  * Sanitizar el HTML
+ * @param string $string Texto a sanitizar
  * @return string String sanitizado
  */
 function s($string) : string{
   $stringSanitisado = htmlspecialchars($string);
   return $stringSanitisado;
 
+}
+
+/**
+ * Valida los tipos que se encuentran en el array
+ * @param string $tipo  Texto a validar
+ * @return bool True si existe el tipo, de lo contrario false
+ */
+function validarTipo($tipo){
+  $tipos = ["propiedad","vendedor"];
+  return in_array($tipo,$tipos);
+}
+
+
+function mostrarNotificacion ($valor) {
+  $mensaje = "";
+  switch ($valor) {
+      case 1:
+          $mensaje = "Creado correctamente";
+          break;
+      case 2:
+          $mensaje = "Actualizado correctamente";
+          break;
+      case 3:
+          $mensaje = "Eliminado correctamente";
+          break;
+      default:
+          $mensaje = false;
+  }
+
+  return $mensaje;
 }

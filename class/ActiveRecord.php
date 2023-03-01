@@ -32,10 +32,10 @@ class ActiveRecord
   {
     if (!empty($this->id)) {
       //Actualizar
-      $this->actualizar();
+      return $this->actualizar();
     } else {
       //Crear nuevo registro
-      $this->crear();
+      return $this->crear();
     }
   }
   /**
@@ -53,11 +53,7 @@ class ActiveRecord
 
     $resultado = self::$db->query($query);
 
-    //Mensaje de exito
-    if ($resultado) {
-      //Mandar al index con mensaje
-      header("location:/admin?resultado=1");
-    }
+    return $resultado;
   }
   /**
    * Actualizar registro en la base de datos
@@ -87,18 +83,14 @@ class ActiveRecord
 
   /**
    * Eliminar registro de la base de datos
+   * @return bool False en caso de error
    */
   public function eliminar()
   {
     $id = self::$db->escape_string($this->id);
     $query = "DELETE FROM " . static::$tabla . " WHERE id=$id LIMIT 1";
-
     $resultado = self::$db->query($query);
-
-    if ($resultado) {
-      $this->borrarImagen();
-      header("Location: /admin?resultado=3");
-    }
+    return $resultado;
   }
 
   /**
@@ -112,6 +104,18 @@ class ActiveRecord
 
     return $resultado;
   }
+
+  /**
+    * Listar los registroc con un limite
+    * @param num $cantidad Limite
+    * @return array Retorna un array de objetos
+    */
+    public static function get($cantidad)
+    {         
+        $query = "SELECT * FROM ". static::$tabla ." LIMIT ". $cantidad ;   
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }   
 
   /**
    * Lista el registro mediante su identificador
@@ -156,7 +160,6 @@ class ActiveRecord
   public static function getErrores()
   {
     return static::$errores;
-
   }
   /**
    * Valida que los campos del formulario esten completos y validos
