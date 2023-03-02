@@ -60,13 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $image->save(RUTA_IMAGENES . $nombreImagen);
 
     //Insertar los registros en la base de datos
-    $resultado = $propiedad->guardar();
+    $propiedad->guardar();
 
-     //Mensaje de exito
-     if ($resultado) {
-      //Mandar al index con mensaje
-      header("location:/admin?resultado=1");
-    }
   }
 }
 

@@ -24,17 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (validarTipo($tipo)) {
             if ($tipo === "propiedad") {
                 $propiedad = Propiedad::find($id);
-                $resultado = $propiedad->eliminar();
+                $propiedad->eliminar();
             } else if ($tipo === "vendedor") {
                 $vendedor = Vendedor::find($id);
-                $resultado = $vendedor->eliminar();
-            }
-
-            if ($resultado) {
-                if ($tipo === "propiedad") {
-                    $propiedad->borrarImagen();
-                }
-                header('location: index.php?resultado=3');
+                $vendedor->eliminar();
             }
         }
     }

@@ -25,13 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (empty($errores)) {
 
     //Insertar los registros en la base de datos
-    $resultado = $vendedor->guardar();
+    $vendedor->guardar();
 
-    //Mensaje de exito
-    if ($resultado) {
-      //Mandar al index con mensaje
-      header("location:/admin?resultado=1");
-    }
+    
   }
 }
 

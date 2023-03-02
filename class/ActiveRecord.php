@@ -32,10 +32,10 @@ class ActiveRecord
   {
     if (!empty($this->id)) {
       //Actualizar
-      return $this->actualizar();
+      $this->actualizar();
     } else {
       //Crear nuevo registro
-      return $this->crear();
+      $this->crear();
     }
   }
   /**
@@ -53,7 +53,11 @@ class ActiveRecord
 
     $resultado = self::$db->query($query);
 
-    return $resultado;
+    //Mensaje de exito
+    if ($resultado) {
+      //Mandar al index con mensaje
+      header("Location: /admin?resultado=1");
+    }
   }
   /**
    * Actualizar registro en la base de datos
@@ -90,7 +94,14 @@ class ActiveRecord
     $id = self::$db->escape_string($this->id);
     $query = "DELETE FROM " . static::$tabla . " WHERE id=$id LIMIT 1";
     $resultado = self::$db->query($query);
-    return $resultado;
+
+    if ($resultado) {
+      //Comprueba que el objeto tenga la propiedad e imagen
+      if (property_exists($this, "imagen")) {
+        $this->borrarImagen();
+      }
+      header('location: /admin?resultado=3');
+    }
   }
 
   /**
@@ -106,16 +117,16 @@ class ActiveRecord
   }
 
   /**
-    * Listar los registroc con un limite
-    * @param num $cantidad Limite
-    * @return array Retorna un array de objetos
-    */
-    public static function get($cantidad)
-    {         
-        $query = "SELECT * FROM ". static::$tabla ." LIMIT ". $cantidad ;   
-        $resultado = self::consultarSQL($query);
-        return $resultado;
-    }   
+   * Listar los registroc con un limite
+   * @param num $cantidad Limite
+   * @return array Retorna un array de objetos
+   */
+  public static function get($cantidad)
+  {
+    $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $cantidad;
+    $resultado = self::consultarSQL($query);
+    return $resultado;
+  }
 
   /**
    * Lista el registro mediante su identificador
